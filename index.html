@@ -357,7 +357,7 @@
         let chartInstance = null;
 
         // Initialize App
-        document.addEventListener("DOMContentLoaded", () => {
+        window.addEventListener("load", () => {
             lucide.createIcons();
             
             // Set Tanggal default ke hari ini pada form modal
@@ -675,7 +675,7 @@
         // Render Stats Panel
         function renderStats() {
             const filtered = getFilteredTransactions();
-            
+            load
             let income = 0;
             let expense = 0;
             let balanceQris = 0;
