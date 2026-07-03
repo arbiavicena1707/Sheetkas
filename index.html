@@ -49,7 +49,7 @@
     <header class="sticky top-0 z-40 w-full border-b border-slate-200/80 bg-white/80 backdrop-blur-md">
         <div class="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
             <div class="flex items-center gap-3">
-                <div class="flex h-10 w-10 items-center justify-center">
+                <div class="flex h-10 w-10 items-center justify-center text-white font-bold">
                    <img src="sheatkasLogo.png" alt="">
                 </div>
                 <div>
@@ -357,7 +357,7 @@
         let chartInstance = null;
 
         // Initialize App
-        window.addEventListener("load", () => {
+        document.addEventListener("DOMContentLoaded", () => {
             lucide.createIcons();
             
             // Set Tanggal default ke hari ini pada form modal
@@ -675,7 +675,7 @@
         // Render Stats Panel
         function renderStats() {
             const filtered = getFilteredTransactions();
-            load
+            
             let income = 0;
             let expense = 0;
             let balanceQris = 0;
