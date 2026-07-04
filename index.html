@@ -342,7 +342,6 @@
     <!-- MAIN DASHBOARD SCRIPT -->
     <script>
         const API_URL = "https://script.google.com/macros/s/AKfycbxN3l6lTZX-UoaG0w6mM6OOe_MyuXwsOg2nyO6JIy1kpyGJtRKELYJ6MvhHDGrai01E/exec";
-
         // Global State
         let transactions = [];
         let summary = { totalIncome: 0, totalExpense: 0, balance: 0, balanceQris: 0, balanceCash: 0 };
@@ -512,7 +511,7 @@
                     throw new Error("API URL belum dikonfigurasi. Silakan periksa kembali.");
                 }
 
-                const res = await fetch(API_URL);
+                const res = await fetch(`${API_URL}?_ts=${Date.now()}`, { credentials: 'omit' });
                 if (!res.ok) throw new Error("Terjadi kesalahan jaringan saat memuat database.");
                 
                 const data = await res.json();
@@ -541,9 +540,10 @@
 
         // Helper POST ke GAS
         async function postToGAS(payload) {
-            const res = await fetch(API_URL, {
+            const res = await fetch(`${API_URL}?_ts=${Date.now()}`, {
                 method: "POST",
                 mode: "cors",
+                credentials: 'omit',
                 headers: { "Content-Type": "text/plain" },
                 body: JSON.stringify(payload)
             });
