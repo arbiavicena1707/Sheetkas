@@ -292,73 +292,35 @@
                 <span>Total Pengeluaran:</span>
                 <span class="font-bold text-rose-500" id="stat-expense">-Rp 0</span>
             </div>
-        </section>
-
-        <!-- Chart Section -->
-        <section
-            class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] mb-8">
-            <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-6">
-                <div>
-                    <h2 class="text-sm font-semibold tracking-tight text-slate-900 dark:text-white">Tren Aliran Dana
-                    </h2>
-                    <p class="text-xs text-slate-500 dark:text-slate-400" id="chart-subtitle">Visualisasi dinamika saldo
-                        dari spreadsheet</p>
-                </div>
-                <div
-                    class="flex flex-wrap gap-1 p-1 bg-slate-100 dark:bg-slate-950 rounded-lg border border-slate-200/50 dark:border-slate-800 self-start">
-                    <button onclick="setFilter('all')" id="filter-all"
-                        class="filter-btn px-3 py-1 text-[11px] font-medium rounded-md transition-all text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white cursor-pointer">Semua</button>
-                    <button onclick="setFilter('today')" id="filter-today"
-                        class="filter-btn px-3 py-1 text-[11px] font-medium rounded-md transition-all text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white cursor-pointer">Hari
-                        Ini</button>
-                    <button onclick="setFilter('week')" id="filter-week"
-                        class="filter-btn px-3 py-1 text-[11px] font-medium rounded-md transition-all text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white cursor-pointer">Minggu
-                        Ini</button>
-                    <button onclick="setFilter('month')" id="filter-month"
-                        class="filter-btn px-3 py-1 text-[11px] font-medium rounded-md transition-all bg-white dark:bg-slate-800 text-black dark:text-white shadow-sm cursor-pointer">Bulan
-                        Ini</button>
-                    <button onclick="setFilter('custom')" id="filter-custom"
-                        class="filter-btn px-3 py-1 text-[11px] font-medium rounded-md transition-all text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white cursor-pointer">Kustom</button>
-                </div>
-            </div>
-            <div id="custom-date-container"
-                class="hidden flex flex-wrap items-center gap-3 p-4 mb-4 rounded-lg bg-slate-50 dark:bg-slate-950 border border-slate-200/60 dark:border-slate-800">
-                <div class="flex items-center gap-2">
-                    <span class="text-xs text-slate-500 dark:text-slate-400 font-medium">Mulai:</span>
-                    <input type="date" id="date-start" onchange="applyCustomDateFilter()"
-                        class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white rounded px-2.5 py-1 text-xs outline-none focus:border-black dark:focus:border-white font-mono">
-                </div>
-                <div class="flex items-center gap-2">
-                    <span class="text-xs text-slate-500 dark:text-slate-400 font-medium">Akhir:</span>
-                    <input type="date" id="date-end" onchange="applyCustomDateFilter()"
-                        class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white rounded px-2.5 py-1 text-xs outline-none focus:border-black dark:focus:border-white font-mono">
-                </div>
-            </div>
-            <div class="h-64 w-full relative">
-                <div id="chart-loading"
-                    class="absolute inset-0 flex items-center justify-center text-xs text-slate-400 bg-white dark:bg-slate-900">
-                    Memuat data grafik...</div>
-                <div id="chart-empty"
-                    class="hidden absolute inset-0 flex items-center justify-center text-xs text-slate-400 border border-dashed border-slate-200 dark:border-slate-800 rounded-lg">
-                    Tidak ada riwayat transaksi pada rentang waktu ini.</div>
-                <canvas id="ledgerChart"></canvas>
+            <div class="h-4 w-px bg-slate-200 dark:bg-slate-800 hidden sm:block"></div>
+            <div class="flex items-center gap-2">
+                <span>Saldo Aman:</span>
+                <span class="font-bold text-violet-500" id="stat-safe-balance">Rp 0</span>
             </div>
         </section>
 
-        <!-- Transaction Table -->
-        <section
-            class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
-            <div
-                class="p-6 border-b border-slate-100 dark:border-slate-800 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        </section>
+
+        <!-- ==============================
+             TABS NAVIGATION
+             ============================== -->
+        <div class="flex items-center gap-6 mb-6 border-b border-slate-200 dark:border-slate-800">
+            <button onclick="switchTab('transactions')" id="tab-btn-transactions" class="pb-3 text-sm font-semibold border-b-2 border-slate-900 dark:border-white text-slate-900 dark:text-white transition-all cursor-pointer">Transaksi</button>
+            <button onclick="switchTab('target')" id="tab-btn-target" class="pb-3 text-sm font-semibold border-b-2 border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 transition-all cursor-pointer">Target & Tabungan</button>
+            <button onclick="switchTab('chart')" id="tab-btn-chart" class="pb-3 text-sm font-semibold border-b-2 border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 transition-all cursor-pointer">Grafik</button>
+        </div>
+
+        <!-- ==============================
+             TRANSACTION TABLE SECTION (TAB 1)
+             ============================== -->
+        <section id="section-transactions" class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-[0_1px_3px_rgba(0,0,0,0.04)] mb-8">
+            <div class="p-6 border-b border-slate-100 dark:border-slate-800 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <div>
-                    <h2 class="text-sm font-semibold tracking-tight text-slate-900 dark:text-white">Catatan Buku Besar
-                    </h2>
-                    <p class="text-xs text-slate-500 dark:text-slate-400" id="feed-subtitle">Live feed entri Google
-                        Spreadsheet</p>
+                    <h2 class="text-sm font-semibold tracking-tight text-slate-900 dark:text-white">Catatan Buku Besar</h2>
+                    <p class="text-xs text-slate-500 dark:text-slate-400" id="feed-subtitle">Live feed entri Google Spreadsheet</p>
                 </div>
                 <div class="relative w-full md:w-72">
-                    <i data-lucide="search"
-                        class="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-400"></i>
+                    <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-400"></i>
                     <input type="text" id="search-input" placeholder="Cari catatan..." oninput="handleSearch()"
                         class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white rounded-lg pl-9 pr-4 py-2 text-xs outline-none focus:bg-white dark:focus:bg-slate-900 focus:border-black dark:focus:border-white transition-all">
                 </div>
@@ -366,8 +328,7 @@
             <div class="overflow-x-auto custom-scrollbar">
                 <table class="w-full border-collapse text-left">
                     <thead>
-                        <tr
-                            class="border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/50 text-[10px] uppercase font-semibold text-slate-400 dark:text-slate-600 tracking-wider font-mono">
+                        <tr class="border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/50 text-[10px] uppercase font-semibold text-slate-400 dark:text-slate-600 tracking-wider font-mono">
                             <th class="px-6 py-3">No</th>
                             <th class="px-6 py-3">Tgl Kejadian</th>
                             <th class="px-6 py-3">Tgl Input</th>
@@ -381,11 +342,62 @@
                     </thead>
                     <tbody id="transactions-body" class="divide-y divide-slate-100 dark:divide-slate-800 text-xs">
                         <tr>
-                            <td colspan="9" class="px-6 py-12 text-center text-slate-400">Menghubungi spreadsheet
-                                database...</td>
+                            <td colspan="9" class="px-6 py-12 text-center text-slate-400">Menghubungi spreadsheet database...</td>
                         </tr>
                     </tbody>
                 </table>
+            </div>
+        </section>
+
+        <!-- ==============================
+             TARGET TABUNGAN SECTION (TAB 2)
+             ============================== -->
+        <section id="section-target" class="hidden rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-[0_1px_3px_rgba(0,0,0,0.04)] mb-8">
+            <div class="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-sm font-semibold tracking-tight text-slate-900 dark:text-white">Target & Tabungan</h2>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Alokasi dana untuk tujuan finansial Anda</p>
+                </div>
+                <button onclick="openTargetModal()" class="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 px-3 py-2 text-xs font-semibold text-white transition-all active:scale-95 cursor-pointer shadow-sm">
+                    <i data-lucide="plus" class="h-3.5 w-3.5"></i> Target Baru
+                </button>
+            </div>
+            <div id="targets-container" class="p-6">
+                <div class="flex items-center justify-center py-10 text-slate-400 text-xs">Memuat target...</div>
+            </div>
+        </section>
+
+        <!-- ==============================
+             CHART SECTION (TAB 3)
+             ============================== -->
+        <section id="section-chart" class="hidden rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] mb-8">
+            <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-6">
+                <div>
+                    <h2 class="text-sm font-semibold tracking-tight text-slate-900 dark:text-white">Tren Aliran Dana</h2>
+                    <p class="text-xs text-slate-500 dark:text-slate-400" id="chart-subtitle">Visualisasi dinamika saldo dari spreadsheet</p>
+                </div>
+                <div class="flex flex-wrap gap-1 p-1 bg-slate-100 dark:bg-slate-950 rounded-lg border border-slate-200/50 dark:border-slate-800 self-start">
+                    <button onclick="setFilter('all')" id="filter-all" class="filter-btn px-3 py-1 text-[11px] font-medium rounded-md transition-all text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white cursor-pointer">Semua</button>
+                    <button onclick="setFilter('today')" id="filter-today" class="filter-btn px-3 py-1 text-[11px] font-medium rounded-md transition-all text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white cursor-pointer">Hari Ini</button>
+                    <button onclick="setFilter('week')" id="filter-week" class="filter-btn px-3 py-1 text-[11px] font-medium rounded-md transition-all text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white cursor-pointer">Minggu Ini</button>
+                    <button onclick="setFilter('month')" id="filter-month" class="filter-btn px-3 py-1 text-[11px] font-medium rounded-md transition-all bg-white dark:bg-slate-800 text-black dark:text-white shadow-sm cursor-pointer">Bulan Ini</button>
+                    <button onclick="setFilter('custom')" id="filter-custom" class="filter-btn px-3 py-1 text-[11px] font-medium rounded-md transition-all text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white cursor-pointer">Kustom</button>
+                </div>
+            </div>
+            <div id="custom-date-container" class="hidden flex flex-wrap items-center gap-3 p-4 mb-4 rounded-lg bg-slate-50 dark:bg-slate-950 border border-slate-200/60 dark:border-slate-800">
+                <div class="flex items-center gap-2">
+                    <span class="text-xs text-slate-500 dark:text-slate-400 font-medium">Mulai:</span>
+                    <input type="date" id="date-start" onchange="applyCustomDateFilter()" class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white rounded px-2.5 py-1 text-xs outline-none focus:border-black dark:focus:border-white font-mono">
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="text-xs text-slate-500 dark:text-slate-400 font-medium">Akhir:</span>
+                    <input type="date" id="date-end" onchange="applyCustomDateFilter()" class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white rounded px-2.5 py-1 text-xs outline-none focus:border-black dark:focus:border-white font-mono">
+                </div>
+            </div>
+            <div class="h-64 w-full relative">
+                <div id="chart-loading" class="absolute inset-0 flex items-center justify-center text-xs text-slate-400 bg-white dark:bg-slate-900">Memuat data grafik...</div>
+                <div id="chart-empty" class="hidden absolute inset-0 flex items-center justify-center text-xs text-slate-400 border border-dashed border-slate-200 dark:border-slate-800 rounded-lg">Tidak ada riwayat transaksi pada rentang waktu ini.</div>
+                <canvas id="ledgerChart"></canvas>
             </div>
         </section>
     </main>
@@ -560,6 +572,138 @@
     </div>
 
     <!-- ============================
+         TARGET MODALS
+         ============================ -->
+
+    <!-- Add/Edit Target Modal -->
+    <div id="target-modal" class="hidden fixed inset-0 z-[80] flex items-center justify-center bg-slate-900/40 backdrop-blur-sm px-4">
+        <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl w-full max-w-md p-6 border border-slate-200 dark:border-slate-800 max-h-[90vh] overflow-y-auto custom-scrollbar">
+            <div class="flex items-center justify-between mb-5">
+                <h2 id="target-modal-title" class="text-sm font-semibold text-slate-900 dark:text-white">Tambah Target Baru</h2>
+                <button onclick="closeTargetModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 cursor-pointer"><i data-lucide="x" class="h-4 w-4"></i></button>
+            </div>
+            <div class="space-y-4">
+                <!-- Tipe (hanya saat tambah baru) -->
+                <div id="target-modal-tipe-section">
+                    <label class="text-[10px] uppercase font-semibold text-slate-500 dark:text-slate-400 tracking-wider block mb-2 font-mono">Tipe Target</label>
+                    <div class="grid grid-cols-2 gap-2" id="target-tipe-buttons">
+                        <button type="button" onclick="setTargetTipe('progress')" id="target-btn-progress"
+                            class="py-2.5 px-3 rounded-lg text-xs font-semibold border border-indigo-500 bg-indigo-50 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300 transition-all cursor-pointer">
+                            📈 Tabungan (Bertahap)
+                        </button>
+                        <button type="button" onclick="setTargetTipe('once')" id="target-btn-once"
+                            class="py-2.5 px-3 rounded-lg text-xs font-semibold border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all cursor-pointer">
+                            💳 Bayar 1x (Lunas)
+                        </button>
+                    </div>
+                </div>
+                <!-- Nama -->
+                <div>
+                    <label class="text-[10px] uppercase font-semibold text-slate-500 dark:text-slate-400 tracking-wider block mb-1.5 font-mono">Nama Target</label>
+                    <input type="text" id="target-input-nama" placeholder="Contoh: Laptop Gaming, Bayar Kos"
+                        class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white rounded-lg px-4 py-2 text-xs outline-none focus:border-black dark:focus:border-white focus:bg-white dark:focus:bg-slate-900 transition-all">
+                </div>
+                <!-- Deskripsi -->
+                <div>
+                    <label class="text-[10px] uppercase font-semibold text-slate-500 dark:text-slate-400 tracking-wider block mb-1.5 font-mono">Deskripsi / Link (Opsional)</label>
+                    <input type="text" id="target-input-deskripsi" placeholder="Catatan, link produk, dsb."
+                        class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white rounded-lg px-4 py-2 text-xs outline-none focus:border-black dark:focus:border-white focus:bg-white dark:focus:bg-slate-900 transition-all">
+                </div>
+                <!-- Jumlah -->
+                <div>
+                    <label class="text-[10px] uppercase font-semibold text-slate-500 dark:text-slate-400 tracking-wider block mb-1.5 font-mono">Jumlah Target (Rp)</label>
+                    <div class="relative">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-xs text-slate-400">Rp</span>
+                        <input type="text" inputmode="numeric" id="target-input-amount" placeholder="0" oninput="formatAmountInput(this)"
+                            class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white rounded-lg pl-10 pr-4 py-2 text-xs outline-none focus:border-black dark:focus:border-white focus:bg-white dark:focus:bg-slate-900 transition-all font-mono">
+                    </div>
+                </div>
+                <!-- Deadline -->
+                <div class="flex items-center gap-3">
+                    <label class="text-[10px] uppercase font-semibold text-slate-500 dark:text-slate-400 tracking-wider font-mono">Deadline?</label>
+                    <button type="button" onclick="toggleTargetDeadline()" id="target-deadline-toggle"
+                        class="relative inline-flex h-5 w-9 items-center rounded-full bg-slate-200 dark:bg-slate-700 transition-colors cursor-pointer">
+                        <span id="target-deadline-thumb" class="inline-block h-3.5 w-3.5 translate-x-0.5 rounded-full bg-white shadow transition-transform"></span>
+                    </button>
+                </div>
+                <div id="target-deadline-input" class="hidden">
+                    <label class="text-[10px] uppercase font-semibold text-slate-500 dark:text-slate-400 tracking-wider block mb-1.5 font-mono">Tanggal Deadline</label>
+                    <input type="date" id="target-input-deadline"
+                        class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white rounded-lg px-4 py-2 text-xs outline-none focus:border-black dark:focus:border-white font-mono">
+                </div>
+                <!-- Error -->
+                <div id="target-modal-error" class="hidden rounded-lg bg-rose-50 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-900 px-3 py-2 text-xs text-rose-700 dark:text-rose-300"></div>
+                <button onclick="submitTargetModal()" id="target-modal-submit"
+                    class="w-full bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg py-2.5 text-xs font-semibold transition-all cursor-pointer active:scale-95">
+                    <span id="target-modal-submit-text">Tambah Target</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Setor / Apply Payment Modal -->
+    <div id="target-apply-modal" class="hidden fixed inset-0 z-[80] flex items-center justify-center bg-slate-900/40 backdrop-blur-sm px-4">
+        <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl w-full max-w-sm p-6 border border-slate-200 dark:border-slate-800">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-sm font-semibold text-slate-900 dark:text-white" id="apply-modal-title">Setor Tabungan</h2>
+                <button onclick="closeApplyModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 cursor-pointer"><i data-lucide="x" class="h-4 w-4"></i></button>
+            </div>
+            <p id="apply-modal-subtitle" class="text-xs text-slate-500 dark:text-slate-400 mb-4"></p>
+            <div class="space-y-4">
+                <!-- Jumlah (hanya untuk progress) -->
+                <div id="apply-amount-section">
+                    <label class="text-[10px] uppercase font-semibold text-slate-500 dark:text-slate-400 tracking-wider block mb-1.5 font-mono">Jumlah Setor (Rp)</label>
+                    <div class="relative">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-xs text-slate-400">Rp</span>
+                        <input type="text" inputmode="numeric" id="apply-input-amount" placeholder="0" oninput="formatAmountInput(this)"
+                            class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white rounded-lg pl-10 pr-4 py-2 text-xs outline-none focus:border-black dark:focus:border-white font-mono">
+                    </div>
+                </div>
+                <!-- Metode -->
+                <div>
+                    <label class="text-[10px] uppercase font-semibold text-slate-500 dark:text-slate-400 tracking-wider block mb-1.5 font-mono">Metode Pembayaran</label>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button type="button" onclick="setApplyMetode('QRIS')" id="apply-btn-qris"
+                            class="py-2.5 px-4 rounded-lg text-xs font-semibold border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all cursor-pointer">
+                            QRIS
+                        </button>
+                        <button type="button" onclick="setApplyMetode('Cash')" id="apply-btn-cash"
+                            class="py-2.5 px-4 rounded-lg text-xs font-semibold border border-slate-900 dark:border-white bg-slate-900 dark:bg-white text-white dark:text-slate-900 transition-all cursor-pointer">
+                            Cash
+                        </button>
+                    </div>
+                </div>
+                <p id="apply-balance-info" class="text-xs text-slate-500 dark:text-slate-400"></p>
+                <div id="apply-modal-error" class="hidden rounded-lg bg-rose-50 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-900 px-3 py-2 text-xs text-rose-700 dark:text-rose-300"></div>
+                <button onclick="submitApplyModal()" id="apply-modal-submit"
+                    class="w-full bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg py-2.5 text-xs font-semibold transition-all cursor-pointer active:scale-95">
+                    <span id="apply-modal-submit-text">Konfirmasi Setoran</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Target Confirm Modal -->
+    <div id="target-delete-modal" class="hidden fixed inset-0 z-[80] flex items-center justify-center bg-slate-900/40 backdrop-blur-sm px-4">
+        <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl w-full max-w-sm p-6 border border-slate-200 dark:border-slate-800">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="h-10 w-10 rounded-full bg-rose-50 dark:bg-rose-950/30 flex items-center justify-center shrink-0">
+                    <i data-lucide="trash-2" class="h-5 w-5 text-rose-600 dark:text-rose-400"></i>
+                </div>
+                <div>
+                    <h3 class="text-sm font-semibold text-slate-900 dark:text-white">Hapus Target</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Riwayat tabungan akan dihapus, saldo akan dikembalikan.</p>
+                </div>
+            </div>
+            <p class="text-xs text-slate-600 dark:text-slate-400 mb-5" id="target-delete-desc"></p>
+            <div class="flex gap-3">
+                <button onclick="closeTargetDeleteModal()" class="flex-1 rounded-lg border border-slate-200 dark:border-slate-700 py-2 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all cursor-pointer">Batal</button>
+                <button onclick="confirmDeleteTarget()" id="btn-confirm-target-delete" class="flex-1 rounded-lg bg-rose-600 py-2 text-xs font-semibold text-white hover:bg-rose-700 transition-all cursor-pointer">Hapus</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================
          MAIN SCRIPT
          ============================ -->
     <script>
@@ -580,6 +724,18 @@
         let serverPassword = null; // password dari server
         let pendingDeleteId = null; // ID transaksi yang akan dihapus
         let isEditMode = false;
+
+        // Target State
+        let targets = [];
+        let targetSummary = {};
+        let targetModalMode = 'add'; // 'add' | 'edit'
+        let editingTargetId = null;
+        let targetTipe = 'progress';
+        let targetDeadlineEnabled = false;
+        let pendingDeleteTargetId = null;
+        let applyTargetId = null;
+        let applyMetode = 'Cash';
+        let activeTab = 'transactions';
 
         // =====================
         // LOCK SCREEN LOGIC
@@ -862,14 +1018,21 @@
             document.getElementById('alert-error').classList.add('hidden');
             showLoading(true);
             try {
-                const res = await fetch(`${API_URL}?_ts=${Date.now()}`, { credentials: 'omit' });
+                const res = await fetch(`${API_URL}?_ts=${Date.now()}`, { 
+                    method: 'GET',
+                    mode: 'cors',
+                    credentials: 'omit',
+                    redirect: 'follow'
+                });
                 if (!res.ok) throw new Error('Terjadi kesalahan jaringan saat memuat database.');
                 const data = await res.json();
                 if (data.success) {
                     transactions = data.transactions;
                     summary = data.summary;
+                    targets = data.targets || [];
+                    targetSummary = data.targetSummary || {};
                     if (data.password) serverPassword = data.password;
-                    renderStats(); renderTable(); renderChart();
+                    renderStats(); renderTable(); renderChart(); renderTargets();
                 } else {
                     throw new Error(data.error || 'Gagal mengunduh spreadsheet.');
                 }
@@ -890,7 +1053,8 @@
                 method: 'POST',
                 mode: 'cors',
                 credentials: 'omit',
-                headers: { 'Content-Type': 'text/plain' },
+                redirect: 'follow',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                 body: JSON.stringify(payload)
             });
             const data = await res.json();
@@ -1086,6 +1250,8 @@
                 document.getElementById('stat-income').innerText = '+' + fmt(summary.totalIncome);
                 document.getElementById('stat-expense').innerText = '-' + fmt(summary.totalExpense);
                 document.getElementById('stat-balance-desc').innerText = 'Akumulasi seluruh transaksi';
+                const safeBalance = summary.safeBalance ?? (summary.balance - (targetSummary.totalReserved || 0));
+                document.getElementById('stat-safe-balance').innerText = fmt(safeBalance);
             } else {
                 document.getElementById('stat-balance').innerText = fmt(balance);
                 document.getElementById('stat-qris').innerText = fmt(balQris);
@@ -1093,6 +1259,392 @@
                 document.getElementById('stat-income').innerText = '+' + fmt(income);
                 document.getElementById('stat-expense').innerText = '-' + fmt(expense);
                 document.getElementById('stat-balance-desc').innerText = 'Dihitung untuk rentang waktu terpilih';
+                document.getElementById('stat-safe-balance').innerText = '—';
+            }
+        }
+
+        // =====================
+        // TABS LOGIC
+        // =====================
+        function switchTab(tabId) {
+            activeTab = tabId;
+            
+            // Hide all sections
+            document.getElementById('section-transactions').classList.add('hidden');
+            document.getElementById('section-target').classList.add('hidden');
+            document.getElementById('section-chart').classList.add('hidden');
+            
+            // Reset all buttons
+            const tabs = ['transactions', 'target', 'chart'];
+            tabs.forEach(t => {
+                const btn = document.getElementById('tab-btn-' + t);
+                btn.classList.remove('border-slate-900', 'dark:border-white', 'text-slate-900', 'dark:text-white');
+                btn.classList.add('border-transparent', 'text-slate-500', 'dark:text-slate-400');
+            });
+            
+            // Show active section and highlight button
+            document.getElementById('section-' + tabId).classList.remove('hidden');
+            const activeBtn = document.getElementById('tab-btn-' + tabId);
+            activeBtn.classList.remove('border-transparent', 'text-slate-500', 'dark:text-slate-400');
+            activeBtn.classList.add('border-slate-900', 'dark:border-white', 'text-slate-900', 'dark:text-white');
+        }
+
+        // =====================
+        // RENDER TARGETS
+        // =====================
+
+        function fmtRp(val) {
+            return 'Rp ' + Math.abs(val).toLocaleString('id-ID', { minimumFractionDigits: 0 });
+        }
+
+        function renderTargets() {
+            const container = document.getElementById('targets-container');
+            lucide.createIcons();
+            if (!targets || targets.length === 0) {
+                container.innerHTML = `<div class="flex flex-col items-center justify-center py-12 text-slate-400 gap-3">
+                    <i data-lucide="target" class="h-10 w-10 opacity-30"></i>
+                    <p class="text-xs">Belum ada target. Klik <strong>Target Baru</strong> untuk mulai menabung.</p>
+                </div>`;
+                lucide.createIcons();
+                return;
+            }
+
+            const activeTargets = targets.filter(t => t.status === 'active');
+            const completedTargets = targets.filter(t => t.status === 'completed');
+
+            let html = '';
+
+            if (activeTargets.length > 0) {
+                html += `<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">`;
+                activeTargets.forEach(t => { html += buildTargetCard(t); });
+                html += `</div>`;
+            }
+
+            if (completedTargets.length > 0) {
+                html += `<div class="mb-3"><p class="text-[10px] uppercase font-semibold text-slate-400 tracking-wider font-mono mb-3">✅ Lunas / Selesai</p>`;
+                html += `<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">`;
+                completedTargets.forEach(t => { html += buildTargetCard(t); });
+                html += `</div></div>`;
+            }
+
+            container.innerHTML = html;
+            lucide.createIcons();
+        }
+
+        function buildTargetCard(t) {
+            const isProgress = t.tipe === 'progress';
+            const isCompleted = t.status === 'completed';
+            const pct = Math.min(100, t.progress || 0);
+            const daysLeft = t.daysLeft;
+            const isDeadlineSoon = t.hasDeadline && daysLeft !== null && daysLeft <= 2 && daysLeft >= 0;
+
+            const borderClass = isDeadlineSoon ? 'border-amber-400 dark:border-amber-500' : (isCompleted ? 'border-emerald-200 dark:border-emerald-900/40' : 'border-slate-200 dark:border-slate-800');
+            const badgeColor = isProgress ? 'bg-indigo-50 dark:bg-indigo-950/50 text-indigo-700 dark:text-indigo-300' : 'bg-amber-50 dark:bg-amber-950/50 text-amber-700 dark:text-amber-300';
+            const progressColor = isCompleted ? 'bg-emerald-500' : 'bg-indigo-500';
+
+            // Build history rows
+            let historyHtml = '';
+            if (t.history && t.history.length > 0) {
+                historyHtml = `<div class="mt-3 rounded-lg bg-slate-50 dark:bg-slate-800/50 p-3">
+                    <p class="text-[9px] uppercase font-semibold text-slate-400 dark:text-slate-500 font-mono mb-2">Riwayat Setoran</p>
+                    <div class="space-y-1 max-h-28 overflow-y-auto custom-scrollbar">`;
+                t.history.forEach(h => {
+                    historyHtml += `<div class="flex items-center justify-between">
+                        <span class="text-[10px] text-slate-500 dark:text-slate-400 font-mono">${h.tanggal} · <span class="${h.metode === 'QRIS' ? 'text-indigo-500' : 'text-slate-500'} font-semibold">${h.metode}</span></span>
+                        <span class="text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">+${fmtRp(h.nominal)}</span>
+                    </div>`;
+                });
+                historyHtml += `</div></div>`;
+            }
+
+            // Deadline badge
+            let deadlineBadge = '';
+            if (t.hasDeadline && t.deadline) {
+                const ddLabel = daysLeft === 0 ? 'Hari ini!' : daysLeft < 0 ? 'Lewat deadline' : `H-${daysLeft}`;
+                const ddColor = isDeadlineSoon ? 'bg-amber-100 dark:bg-amber-950/50 text-amber-700 dark:text-amber-300 border border-amber-300 dark:border-amber-700' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400';
+                deadlineBadge = `<span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[9px] font-semibold font-mono ${ddColor}">${ddLabel} · ${t.deadline}</span>`;
+            }
+
+            // Deskripsi
+            let deskripsiHtml = '';
+            if (t.deskripsi) {
+                const isLink = t.deskripsi.startsWith('http');
+                deskripsiHtml = `<p class="text-[10px] text-slate-400 dark:text-slate-500 mt-1 italic">${isLink ? `<a href="${t.deskripsi}" target="_blank" class="text-indigo-500 underline underline-offset-2 hover:text-indigo-600">${t.deskripsi}</a>` : t.deskripsi}</p>`;
+            }
+
+            return `<div class="rounded-xl border ${borderClass} bg-white dark:bg-slate-900 p-4 flex flex-col gap-3 transition-all hover:shadow-md">
+                <div class="flex items-start justify-between gap-2">
+                    <div class="flex-1 min-w-0">
+                        <div class="flex flex-wrap items-center gap-1.5 mb-1">
+                            <span class="px-2 py-0.5 rounded text-[9px] font-bold font-mono ${badgeColor}">${isProgress ? 'TABUNGAN' : 'BAYAR 1×'}</span>
+                            ${deadlineBadge}
+                            ${isCompleted ? '<span class="px-2 py-0.5 rounded text-[9px] font-bold bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300">✓ LUNAS</span>' : ''}
+                        </div>
+                        <p class="text-sm font-semibold text-slate-900 dark:text-white truncate ${isCompleted ? 'line-through opacity-60' : ''}">${t.nama}</p>
+                        ${deskripsiHtml}
+                    </div>
+                    ${!isCompleted ? `
+                    <div class="flex items-center gap-1 shrink-0">
+                        <button onclick="openEditTargetModal(${JSON.stringify(t).replace(/"/g, '&quot;')})" title="Edit" class="h-7 w-7 rounded-lg flex items-center justify-center border border-slate-200 dark:border-slate-700 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all cursor-pointer">
+                            <i data-lucide="pencil" class="h-3 w-3"></i>
+                        </button>
+                        <button onclick="openTargetDeleteModal(${t.id}, '${t.nama.replace(/'/g, "\\'").replace(/"/g, '\\&quot;')}')" title="Hapus" class="h-7 w-7 rounded-lg flex items-center justify-center border border-slate-200 dark:border-slate-700 text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 hover:border-rose-200 dark:hover:border-rose-800 transition-all cursor-pointer">
+                            <i data-lucide="trash-2" class="h-3 w-3"></i>
+                        </button>
+                    </div>` : `
+                    <button onclick="openTargetDeleteModal(${t.id}, '${t.nama.replace(/'/g, "\\'").replace(/"/g, '\\&quot;')}')" title="Hapus" class="h-7 w-7 rounded-lg flex items-center justify-center border border-slate-200 dark:border-slate-700 text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 transition-all cursor-pointer">
+                        <i data-lucide="trash-2" class="h-3 w-3"></i>
+                    </button>`}
+                </div>
+
+                ${isProgress ? `
+                <div>
+                    <div class="flex justify-between items-center mb-1.5">
+                        <span class="text-[10px] text-slate-500 dark:text-slate-400">${fmtRp(t.terkumpul)} / ${fmtRp(t.jumlahTarget)}</span>
+                        <span class="text-[10px] font-bold ${isCompleted ? 'text-emerald-500' : 'text-indigo-500'}">${pct.toFixed(0)}%</span>
+                    </div>
+                    <div class="w-full h-2 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
+                        <div class="h-full rounded-full ${progressColor} transition-all" style="width:${pct}%"></div>
+                    </div>
+                    ${!isCompleted ? `<p class="text-[10px] text-slate-400 dark:text-slate-500 mt-1">Sisa: ${fmtRp(t.remaining)}</p>` : ''}
+                </div>` : `
+                <div>
+                    <p class="text-xl font-bold ${isCompleted ? 'text-emerald-500' : 'text-slate-900 dark:text-white'}">${fmtRp(t.jumlahTarget)}</p>
+                    <p class="text-[10px] ${isCompleted ? 'text-emerald-500' : 'text-slate-400 dark:text-slate-500'}">${isCompleted ? 'Sudah lunas' : 'Belum dibayar'}</p>
+                </div>`}
+
+                ${historyHtml}
+
+                ${!isCompleted ? `<button onclick="openApplyModal(${JSON.stringify(t).replace(/"/g, '&quot;')})" class="mt-auto w-full rounded-lg py-2 text-xs font-semibold transition-all cursor-pointer active:scale-95 ${isProgress ? 'bg-indigo-600 hover:bg-indigo-700 text-white' : 'bg-slate-900 dark:bg-white hover:bg-slate-800 dark:hover:bg-slate-100 text-white dark:text-slate-900'}">
+                    ${isProgress ? '+ Setor Tabungan' : 'Bayar Sekarang'}
+                </button>` : ''}
+            </div>`;
+        }
+
+        // --- TARGET MODAL (ADD / EDIT) ---
+        function setTargetTipe(tipe) {
+            targetTipe = tipe;
+            const pBtn = document.getElementById('target-btn-progress');
+            const oBtn = document.getElementById('target-btn-once');
+            const active = 'py-2.5 px-3 rounded-lg text-xs font-semibold border border-indigo-500 bg-indigo-50 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300 transition-all cursor-pointer';
+            const inactive = 'py-2.5 px-3 rounded-lg text-xs font-semibold border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all cursor-pointer';
+            if (tipe === 'progress') { pBtn.className = active; oBtn.className = inactive; }
+            else { oBtn.className = active; pBtn.className = inactive; }
+        }
+
+        function toggleTargetDeadline() {
+            targetDeadlineEnabled = !targetDeadlineEnabled;
+            const toggle = document.getElementById('target-deadline-toggle');
+            const thumb = document.getElementById('target-deadline-thumb');
+            const inputDiv = document.getElementById('target-deadline-input');
+            if (targetDeadlineEnabled) {
+                toggle.classList.remove('bg-slate-200', 'dark:bg-slate-700');
+                toggle.classList.add('bg-indigo-500');
+                thumb.classList.remove('translate-x-0.5');
+                thumb.classList.add('translate-x-5');
+                inputDiv.classList.remove('hidden');
+            } else {
+                toggle.classList.add('bg-slate-200', 'dark:bg-slate-700');
+                toggle.classList.remove('bg-indigo-500');
+                thumb.classList.add('translate-x-0.5');
+                thumb.classList.remove('translate-x-5');
+                inputDiv.classList.add('hidden');
+            }
+        }
+
+        function openTargetModal() {
+            targetModalMode = 'add';
+            editingTargetId = null;
+            targetTipe = 'progress';
+            targetDeadlineEnabled = false;
+            document.getElementById('target-modal-title').textContent = 'Tambah Target Baru';
+            document.getElementById('target-modal-submit-text').textContent = 'Tambah Target';
+            document.getElementById('target-modal-tipe-section').classList.remove('hidden');
+            document.getElementById('target-input-nama').value = '';
+            document.getElementById('target-input-deskripsi').value = '';
+            document.getElementById('target-input-amount').value = '';
+            document.getElementById('target-input-deadline').value = '';
+            document.getElementById('target-deadline-input').classList.add('hidden');
+            document.getElementById('target-deadline-toggle').classList.add('bg-slate-200', 'dark:bg-slate-700');
+            document.getElementById('target-deadline-toggle').classList.remove('bg-indigo-500');
+            document.getElementById('target-deadline-thumb').classList.add('translate-x-0.5');
+            document.getElementById('target-deadline-thumb').classList.remove('translate-x-5');
+            document.getElementById('target-modal-error').classList.add('hidden');
+            setTargetTipe('progress');
+            document.getElementById('target-modal').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function openEditTargetModal(t) {
+            targetModalMode = 'edit';
+            editingTargetId = t.id;
+            targetTipe = t.tipe;
+            targetDeadlineEnabled = !!t.deadline;
+            document.getElementById('target-modal-title').textContent = 'Edit Target';
+            document.getElementById('target-modal-submit-text').textContent = 'Simpan Perubahan';
+            document.getElementById('target-modal-tipe-section').classList.add('hidden');
+            document.getElementById('target-input-nama').value = t.nama;
+            document.getElementById('target-input-deskripsi').value = t.deskripsi || '';
+            const amtRaw = Math.round(t.jumlahTarget);
+            document.getElementById('target-input-amount').value = amtRaw.toLocaleString('id-ID');
+            if (t.deadline) {
+                document.getElementById('target-input-deadline').value = t.deadline;
+                document.getElementById('target-deadline-input').classList.remove('hidden');
+                document.getElementById('target-deadline-toggle').classList.remove('bg-slate-200', 'dark:bg-slate-700');
+                document.getElementById('target-deadline-toggle').classList.add('bg-indigo-500');
+                document.getElementById('target-deadline-thumb').classList.remove('translate-x-0.5');
+                document.getElementById('target-deadline-thumb').classList.add('translate-x-5');
+            } else {
+                document.getElementById('target-input-deadline').value = '';
+                document.getElementById('target-deadline-input').classList.add('hidden');
+                document.getElementById('target-deadline-toggle').classList.add('bg-slate-200', 'dark:bg-slate-700');
+                document.getElementById('target-deadline-toggle').classList.remove('bg-indigo-500');
+                document.getElementById('target-deadline-thumb').classList.add('translate-x-0.5');
+                document.getElementById('target-deadline-thumb').classList.remove('translate-x-5');
+            }
+            document.getElementById('target-modal-error').classList.add('hidden');
+            document.getElementById('target-modal').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function closeTargetModal() {
+            document.getElementById('target-modal').classList.add('hidden');
+        }
+
+        async function submitTargetModal() {
+            const nama = document.getElementById('target-input-nama').value.trim();
+            const deskripsi = document.getElementById('target-input-deskripsi').value.trim();
+            const raw = document.getElementById('target-input-amount').value.replace(/\./g, '').replace(/[^0-9]/g, '');
+            const amount = parseFloat(raw) || 0;
+            const deadline = targetDeadlineEnabled ? document.getElementById('target-input-deadline').value : '';
+            const errEl = document.getElementById('target-modal-error');
+            const btnText = document.getElementById('target-modal-submit-text');
+
+            errEl.classList.add('hidden');
+            if (!nama) { errEl.textContent = 'Nama target wajib diisi.'; errEl.classList.remove('hidden'); return; }
+            if (amount <= 0) { errEl.textContent = 'Jumlah target harus lebih dari 0.'; errEl.classList.remove('hidden'); return; }
+            if (targetDeadlineEnabled && !deadline) { errEl.textContent = 'Pilih tanggal deadline.'; errEl.classList.remove('hidden'); return; }
+
+            btnText.textContent = 'Menyimpan...';
+            showLoading(true);
+            try {
+                const payload = targetModalMode === 'edit'
+                    ? { action: 'edit_target', id: editingTargetId, nama, deskripsi, jumlahTarget: amount, deadline }
+                    : { action: 'add_target', nama, deskripsi, tipe: targetTipe, jumlahTarget: amount, deadline };
+                await postToGAS(payload);
+                closeTargetModal();
+                showToast(targetModalMode === 'edit' ? 'Target berhasil diperbarui.' : 'Target berhasil ditambahkan!');
+                await fetchLedgerData(true);
+            } catch (err) {
+                errEl.textContent = 'Gagal: ' + err.message;
+                errEl.classList.remove('hidden');
+            } finally {
+                btnText.textContent = targetModalMode === 'edit' ? 'Simpan Perubahan' : 'Tambah Target';
+                showLoading(false);
+            }
+        }
+
+        // --- TARGET DELETE ---
+        function openTargetDeleteModal(id, nama) {
+            pendingDeleteTargetId = id;
+            document.getElementById('target-delete-desc').textContent = `Yakin ingin menghapus target "${nama}"?`;
+            document.getElementById('target-delete-modal').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function closeTargetDeleteModal() {
+            document.getElementById('target-delete-modal').classList.add('hidden');
+            pendingDeleteTargetId = null;
+        }
+
+        async function confirmDeleteTarget() {
+            if (!pendingDeleteTargetId) return;
+            const btn = document.getElementById('btn-confirm-target-delete');
+            btn.disabled = true;
+            btn.textContent = 'Menghapus...';
+            showLoading(true);
+            try {
+                await postToGAS({ action: 'delete_target', id: pendingDeleteTargetId });
+                closeTargetDeleteModal();
+                showToast('Target berhasil dihapus.');
+                await fetchLedgerData(true);
+            } catch (err) {
+                alert('Gagal menghapus target: ' + err.message);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Hapus';
+                showLoading(false);
+            }
+        }
+
+        // --- APPLY TARGET PAYMENT ---
+        function setApplyMetode(metode) {
+            applyMetode = metode;
+            const qBtn = document.getElementById('apply-btn-qris');
+            const cBtn = document.getElementById('apply-btn-cash');
+            const qActive = 'py-2.5 px-4 rounded-lg text-xs font-semibold border border-indigo-500 bg-indigo-50 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300 transition-all cursor-pointer';
+            const cActive = 'py-2.5 px-4 rounded-lg text-xs font-semibold border border-slate-900 dark:border-white bg-slate-900 dark:bg-white text-white dark:text-slate-900 transition-all cursor-pointer';
+            const inactive = 'py-2.5 px-4 rounded-lg text-xs font-semibold border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all cursor-pointer';
+            if (metode === 'QRIS') { qBtn.className = qActive; cBtn.className = inactive; }
+            else { cBtn.className = cActive; qBtn.className = inactive; }
+            // Update balance info
+            const bal = metode === 'QRIS' ? (summary.balanceQris || 0) : (summary.balanceCash || 0);
+            document.getElementById('apply-balance-info').textContent = `Saldo ${metode} saat ini: ${fmtRp(bal)}`;
+        }
+
+        function openApplyModal(t) {
+            applyTargetId = t.id;
+            applyMetode = 'Cash';
+            const isOnce = t.tipe === 'once';
+            document.getElementById('apply-modal-title').textContent = isOnce ? 'Bayar Sekarang' : 'Setor Tabungan';
+            document.getElementById('apply-modal-subtitle').textContent = `${t.nama} — Sisa: ${fmtRp(t.remaining)}`;
+            const amtSection = document.getElementById('apply-amount-section');
+            if (isOnce) {
+                amtSection.classList.add('hidden');
+            } else {
+                amtSection.classList.remove('hidden');
+                document.getElementById('apply-input-amount').value = '';
+            }
+            document.getElementById('apply-modal-error').classList.add('hidden');
+            setApplyMetode('Cash');
+            document.getElementById('target-apply-modal').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function closeApplyModal() {
+            document.getElementById('target-apply-modal').classList.add('hidden');
+            applyTargetId = null;
+        }
+
+        async function submitApplyModal() {
+            const target = targets.find(t => t.id === applyTargetId);
+            if (!target) return;
+            const isOnce = target.tipe === 'once';
+            const raw = document.getElementById('apply-input-amount').value.replace(/\./g, '').replace(/[^0-9]/g, '');
+            const amount = isOnce ? target.remaining : (parseFloat(raw) || 0);
+            const errEl = document.getElementById('apply-modal-error');
+            const btnText = document.getElementById('apply-modal-submit-text');
+
+            errEl.classList.add('hidden');
+            if (!isOnce && amount <= 0) { errEl.textContent = 'Masukkan jumlah yang valid.'; errEl.classList.remove('hidden'); return; }
+            if (!isOnce && amount > target.remaining) { errEl.textContent = 'Jumlah melebihi sisa target.'; errEl.classList.remove('hidden'); return; }
+            const bal = applyMetode === 'QRIS' ? (summary.balanceQris || 0) : (summary.balanceCash || 0);
+            if (amount > bal) { errEl.textContent = `Saldo ${applyMetode} tidak cukup (${fmtRp(bal)}).`; errEl.classList.remove('hidden'); return; }
+
+            btnText.textContent = 'Memproses...';
+            showLoading(true);
+            try {
+                await postToGAS({ action: 'apply_target', targetId: applyTargetId, amount, metode: applyMetode });
+                closeApplyModal();
+                const newPct = Math.min(100, ((target.terkumpul + amount) / target.jumlahTarget) * 100);
+                showToast(newPct >= 100 ? `🎉 Target "${target.nama}" lunas! Uang otomatis dipotong dari saldo.` : `Berhasil setor ${fmtRp(amount)} ke "${target.nama}"!`);
+                await fetchLedgerData(true);
+            } catch (err) {
+                errEl.textContent = 'Gagal: ' + err.message;
+                errEl.classList.remove('hidden');
+            } finally {
+                btnText.textContent = 'Konfirmasi Setoran';
+                showLoading(false);
             }
         }
 
